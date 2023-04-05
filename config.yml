@@ -1,0 +1,3 @@
+docs_path: SCRulings22/
+pinecone_index_name: scrdemo
+pinecone_environment: us-east4-gcp

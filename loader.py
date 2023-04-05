@@ -1,5 +1,6 @@
 import os
 import pinecone
+import yaml
 from langchain.llms import OpenAI
 from langchain.document_loaders import PyPDFLoader
 from langchain.embeddings.openai import OpenAIEmbeddings
@@ -8,9 +9,12 @@ from langchain.vectorstores import Pinecone
 from kor.extraction import create_extraction_chain
 from kor.nodes import Object, Text, Number
 
-directory_path = 'SCRulings22/'
-pinecone_index_name = "scrdemo"
-pinecone_environment = "us-east4-gcp"
+with open('config.yml', 'r') as f:
+    config = yaml.safe_load(f)
+
+directory_path = config['docs_path']
+pinecone_index_name = config['pinecone_index_name']
+pinecone_environment = config['pinecone_environment']
 
 pinecone.init(environment=pinecone_environment)
 
