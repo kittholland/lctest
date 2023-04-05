@@ -8,20 +8,28 @@ from langchain.vectorstores import Pinecone
 from kor.extraction import create_extraction_chain
 from kor.nodes import Object, Text, Number
 
-filepath = 'SCRulings22/21-887_k53m.pdf'
+directory_path = 'SCRulings22/'
 pinecone_index_name = "scrdemo"
+pinecone_environment = "us-east4-gcp"
 
-#load pdf to text and split in chunks
-loader = PyPDFLoader(filepath)
-document = loader.load()
-text_splitter = RecursiveCharacterTextSplitter(
-    chunk_size = 1000,
-    chunk_overlap = 200
-)
-split_text = text_splitter.split_documents(document)
-embeddings = OpenAIEmbeddings()
+pinecone.init(environment=pinecone_environment)
 
-#initialize pinecone database and upsert vectors
-pinecone.init()
-add_docs = Pinecone.add_documents(split_text)
-print(split_text)
+for filename in os.listdir(directory_path):
+    #load pdf to text and split in chunks
+    filepath = f"{directory_path}{filename}"
+    print(f"Processing {filepath}...")
+    loader = PyPDFLoader(filepath)
+    document = loader.load()
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size = 1000,
+        chunk_overlap = 200
+    )
+    docs = text_splitter.split_documents(document)
+    embeddings = OpenAIEmbeddings()
+
+    #initialize pinecone database and upsert vectors
+    docsearch = Pinecone.from_documents(
+        docs,
+        embeddings,
+        index_name=pinecone_index_name
+    )
