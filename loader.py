@@ -19,7 +19,7 @@ pinecone_environment = config['pinecone_environment']
 pinecone.init(environment=pinecone_environment)
 
 for filename in os.listdir(directory_path):
-    #load pdf to text and split in chunks
+    #load pdf documents and split in chunks
     filepath = f"{directory_path}{filename}"
     print(f"Processing {filepath}...")
     loader = PyPDFLoader(filepath)
