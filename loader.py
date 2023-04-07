@@ -1,13 +1,9 @@
-import os
-import pinecone
-import yaml
+import os, pinecone, yaml
 from langchain.llms import OpenAI
 from langchain.document_loaders import PyPDFLoader
 from langchain.embeddings.openai import OpenAIEmbeddings
 from langchain.text_splitter import RecursiveCharacterTextSplitter
 from langchain.vectorstores import Pinecone
-from kor.extraction import create_extraction_chain
-from kor.nodes import Object, Text, Number
 
 with open('config.yml', 'r') as f:
     config = yaml.safe_load(f)
